@@ -1,13 +1,13 @@
-# UMI_tools_parallel
+# UMI_parallel
 
 ## Overview
 
-`UMI_tools_parallel` is designed to facilitate the parallel processing `umi_tools extract` and `umi_tools dedup`. The primary motivation for creating this tool was to address a limitation of the current `umi_tools`—its inability to utilize parallel processing.
-The tool is designed to be used in a UNIX-like environment, and is implemented as a shell script that utilizes GNU Parallel for parallel processing.
+`UMI_parallel` is designed to facilitate the parallel processing `umi_tools extract` and `umi_tools dedup`. The primary motivation for creating this tool was to address a limitation of the current `umi_tools`—its inability to utilize parallel processing.
+The tool is designed to be used in a UNIX-like environment and is implemented as a shell script that utilizes GNU Parallel for parallel processing.
 
 ## Prerequisites
 
-Before using `UMI_tools_parallel`, ensure you have the following software installed and available in your system's PATH:
+Before using `UMI_parallel`, ensure you have the following software installed and available in your system's PATH:
 
 - [umi_tools](https://github.com/CGATOxford/UMI-tools): Required for UMI extraction from sequencing data.
 
@@ -33,11 +33,11 @@ Always give credit to the original authors of the tools by citing their work:
 
 ## Installation
 
-To install `UMI_tools_parallel`, simply clone the repository and add the `bin` directory to your system's PATH:
+To install `UMI_parallel`, simply clone the repository and add the `bin` directory to your system's PATH:
 
 ```
 git clone
-cd UMI_tools_parallel
+cd UMI_parallel
 export PATH=$PATH:$(pwd)/bin
 ```
 
@@ -66,7 +66,7 @@ Example:
  para_umi_extract.sh -i /path/to/input/dir -t 4 -c TRUE -o /path/to/output/dir -f umi_options.conf
 ```
 This example processes files in /path/to/input using 4 CPUs, with UMI extraction
-options specified in umi_options.conf, compresses the output files, and writes them to /path/to/output.
+options specified in umi_options.conf, compresses the output files and writes them to /path/to/output.
 
 #### Expected Input and Output
 
@@ -78,7 +78,7 @@ The configuration file should list `umi_tools extract` options as defined in the
 
 ## Performance and Testing
 
-`UMI_tools_parallel` has been thoroughly tested on Ubuntu 22.04. During these tests, it was observed that running the tool on systems with Solid State Drives (SSDs) significantly enhances the performance of `umi_tools extract`, and `umi_tools dedup` leading to faster processing times. However, when the tool is used with Hard Disk Drives (HDDs), the performance improvement is less pronounced.
+`UMI_parallel` has been thoroughly tested on Ubuntu 22.04. During these tests, it was observed that running the tool on systems with Solid State Drives (SSDs) significantly enhances the performance of `umi_tools extract`, and `umi_tools dedup` leading to faster processing times. However, when the tool is used with Hard Disk Drives (HDDs), the performance improvement is less pronounced.
 
 ## Disclaimer
 This tool is provided as is, without any warranty or guarantee of its performance. The user assumes full responsibility for the use of this tool and any associated data. The authors are not responsible for any damages or loss of data as a result of using this tool.
