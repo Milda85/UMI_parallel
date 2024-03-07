@@ -74,7 +74,7 @@ The script expects input files in the format `basename.fastq.gz`. Based on the c
 
 #### Configuration File
 
-The configuration file should list `umi_tools extract` options as defined in the [umi_tools documentation](https://umi-tools.readthedocs.io/en/latest/reference/extract.html), with one option per line. Do not include the input (`--stdin=`) and output (`--stdout=`) file options, as these are managed by the script.
+The configuration file should list `umi_tools extract` options as defined in the [umi_tools documentation](https://umi-tools.readthedocs.io/en/latest/reference/extract.html), with one option per line. Do not include the input (`--stdin=`), output (`--stdout=`) and log (`--log=`) file options, as these are managed by the script.
 
 ## Performance and Testing
 
