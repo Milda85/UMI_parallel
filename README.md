@@ -2,14 +2,14 @@
 
 ## Overview
 
-`UMI_parallel` is designed to facilitate the parallel processing `umi_tools extract` and `umi_tools dedup`. The primary motivation for creating this tool was to address a limitation of the current `umi_tools`—its inability to utilize parallel processing.
+`UMI_parallel` is designed to facilitate the parallel processing of `umi_tools extract` and `umi_tools dedup`. The primary motivation for creating this tool was to address a limitation of the current `umi_tools`—its inability to utilize parallel processing.
 The tool is designed to be used in a UNIX-like environment and is implemented as a shell script that utilizes GNU Parallel for parallel processing.
 
 ## Prerequisites
 
 Before using `UMI_parallel`, ensure you have the following software installed and available in your system's PATH:
 
-- [umi_tools](https://github.com/CGATOxford/UMI-tools): Required for UMI extraction from sequencing data.
+- [umi_tools](https://github.com/CGATOxford/UMI-tools): Required for UMI processing.
 
 ```
 conda install -c bioconda -c conda-forge umi_tools
@@ -26,7 +26,7 @@ pip install umi_tools
 sudo apt-get install parallel
 ```
 
-Always give credit to the original authors of the tools by citing their work:
+Always give credit to the original authors of these tools by citing their work:
 - umi_tools: Smith, T., Heger, A., & Sudbery, I. (2017). UMI-tools: modeling sequencing errors in Unique Molecular Identifiers to improve quantification accuracy. Genome Research, 27(3), 491–499. https://doi.org/10.1101/gr.209601.116
 
 - GNU Parallel: Tange, O. (2011). GNU Parallel - The Command-Line Power Tool. The USENIX Magazine, 36(1), 42–47. https://doi.org/10.5281/zenodo.16303
@@ -74,12 +74,38 @@ The script expects input files in the format `basename.fastq.gz`. Based on the c
 
 #### Configuration File
 
-The configuration file should list `umi_tools extract` options as defined in the [umi_tools documentation](https://umi-tools.readthedocs.io/en/latest/reference/extract.html), with one option per line. Do not include the input (`--stdin=`), output (`--stdout=`) and log (`--log=`) file options, as these are managed by the script.
+The configuration file should list `umi_tools extract` options as defined in the [umi_tools extract documentation](https://umi-tools.readthedocs.io/en/latest/reference/extract.html), with one option per line. Do not include the input (`--stdin=`), output (`--stdout=`) and log (`--log=`) file options, as these are managed by the script.
+
+## UMI deduplication
+```
+para_umi_dedup.sh
+```
+This script facilitates the parallel deduplication of bam files based on UMIs (Unique Molecular Identifiers) using umi_tools dedup. It assumes that the FASTQ files were processed with umi_tools extract before mapping and thus the UMI is the last word of the read name.
+
+```
+para_umi_dedup.sh -i <path> -o <path> -t <integer> -f <path>
+
+Options:
+  -i  <path>    Specify the input directory containing .bam files.
+  -o  <path>    Specify the output directory for deduplicated .bam files (default: current directory).  
+  -t  <integer> Specify the number of CPUs to use for parallel processing.
+  -f  <path>    Specify the path to the configuration file containing UMI tools dedup options.
+  -h, --help    Show this help message and exit.
+
+Example:
+ para_umi_dedup.sh -i /path/to/input/dir -t 4 -o /path/to/output/dir -f umi_options.conf
+```
+This example processes files in /path/to/input using 4 CPUs, with UMI deduplication options specified in umi_options.conf and writes the deduplicated files to /path/to/output.
+
+#### Expected Input and Output
+The script expects input files in the format `basename.bam`. The output files will be named `basename.dedup.bam`. The bam files should be indexed.
+
+#### Configuration File
+The configuration file should list `umi_tools dedup` options as defined in the [umi_tools dedup documentation](https://umi-tools.readthedocs.io/en/latest/reference/dedup.html), with one option per line. Do not include the input (`--stdin=`), output (`--stdout=`) and log (`--log=`) file options, as these are managed by the script.
 
 ## Performance and Testing
 
-`UMI_parallel` has been thoroughly tested on Ubuntu 22.04. During these tests, it was observed that running the tool on systems with Solid State Drives (SSDs) significantly enhances the performance of `umi_tools extract`, and `umi_tools dedup` leading to faster processing times. However, when the tool is used with Hard Disk Drives (HDDs), the performance improvement is less pronounced.
+`UMI_parallel` has been tested on Ubuntu 22.04. During these tests, it was observed that running the tool on systems with Solid State Drives (SSDs) significantly enhances the performance of `umi_tools extract`, and `umi_tools dedup` leading to faster processing times. However, when the tool is used with Hard Disk Drives (HDDs), the performance improvement is less pronounced.
 
 ## Disclaimer
 This tool is provided as is, without any warranty or guarantee of its performance. The user assumes full responsibility for the use of this tool and any associated data. The authors are not responsible for any damages or loss of data as a result of using this tool.
-
